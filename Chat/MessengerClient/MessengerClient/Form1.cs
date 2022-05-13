@@ -48,6 +48,7 @@ namespace MessengerClient
             else
             {
                 CloseConnections();
+                AppendToTexBox("Connection Closed");
             }
         }
 
@@ -142,7 +143,7 @@ namespace MessengerClient
 
             isConnected = false;
             UpdateFormLayout(isConnected);
-            AppendToTexBox("Connection Closed");
+            //AppendToTexBox("Connection Closed");
         }
 
         private void DisconnectCallBack(IAsyncResult ar)

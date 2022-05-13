@@ -90,12 +90,10 @@ namespace MessengerServer
 
                 if (received == 0)
                 {
-                    //serverSocket.Dispose();
-                    
+                    CloseConnectionServer(serverSocket);
                     AppendToTexBox("Client Disconnected");
                     isConnected = false;
                     UpdateFormLayout(isConnected);
-                    CloseConnectionClient(clientSocket);
                     return;
                 }
 
