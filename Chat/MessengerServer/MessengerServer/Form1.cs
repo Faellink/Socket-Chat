@@ -28,6 +28,7 @@ namespace MessengerServer
         private string serverName = "server";
         //
         private bool isConnected = false;
+        private bool isListening = false;
 
         public Form1()
         {
@@ -44,11 +45,14 @@ namespace MessengerServer
                 //int portNumber = int.Parse(portTextBox.Text);
                 //IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, portNumber);
                 IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 23000);
+
                 serverSocket.Bind(ipEndPoint);
                 serverSocket.Listen(0);
+                isListening = true;
                 serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
-                AppendToTexBox("Server started \r\nWaiting for connections...\r\n");
+                AppendToTexBox("Server started \r\nWaiting for connections...\n");
                 connectButton.Text = "Listening";
+
             }
             catch (Exception ex)
             {
@@ -70,6 +74,7 @@ namespace MessengerServer
             }
             catch (Exception ex)
             {
+                //serverSocket.Close();
                 MessageBox.Show($"SERVER AcceptCallBack: {ex.Message}");
             }
         }
@@ -80,26 +85,17 @@ namespace MessengerServer
             try
             {
                 //TODO: work on receive
-                //int received = clientSocket.EndReceive(ar);
-                //Array.Resize(ref dataBuffer, received);
-                //string text = Encoding.ASCII.GetString(dataBuffer);
-                //AppendToTexBox(text);
-                //Array.Resize(ref dataBuffer, clientSocket.ReceiveBufferSize);
-                //clientSocket.BeginReceive(dataBuffer, 0, dataBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), null);
 
                 int received = clientSocket.EndReceive(ar);
 
                 if (received == 0)
                 {
-                    serverSocket.Dispose();
-                    //MessageBox.Show("Client Disconnected");
+                    //serverSocket.Dispose();
+                    
                     AppendToTexBox("Client Disconnected");
-                    // close connections
-                    //CloseConnections();
-                    //serverSocket.Shutdown(SocketShutdown.Both);
-                    //serverSocket.Close();
                     isConnected = false;
                     UpdateFormLayout(isConnected);
+                    CloseConnectionClient(clientSocket);
                     return;
                 }
 
@@ -137,7 +133,21 @@ namespace MessengerServer
 
         private void ConnectClick(object sender, EventArgs e)
         {
-            StartServer();
+
+            //StartServer();
+
+            if (isConnected == false)
+            {
+                StartServer();
+            }
+            else
+            {
+                isConnected = false;
+                UpdateFormLayout(isConnected);
+                CloseConnectionClient(clientSocket);
+                CloseConnectionServer(serverSocket);
+            }
+
         }
 
         private void SendClick(object sender, EventArgs e)
@@ -157,43 +167,17 @@ namespace MessengerServer
             }
         }
 
-        void CloseConnection(Socket socket)
+        void CloseConnectionServer(Socket serverSocket)
         {
-            //serverSocket.Send();
-            //socket.Shutdown(SocketShutdown.Both);
-            //socket.Close();
-            socket.Dispose();
-            socket.Close();
+            //serverSocket.Shutdown(SocketShutdown.Both);
+            serverSocket.Dispose();
         }
 
-        //private void CloseConnections()
-        //{
-        //    serverSocket.Shutdown(SocketShutdown.Both);
-        //    serverSocket.BeginDisconnect(false, new AsyncCallback(DisconnectCallBack), null);
-
-        //    //clientSocket.Close();
-
-        //    //isConnected = false;
-        //    //connectButton.Text = "Connect";
-        //    //AppendToTexBox("Connection Closed");
-        //}
-
-        //private void DisconnectCallBack(IAsyncResult ar)
-        //{
-        //    try
-        //    {
-        //        //SocketConnected(clientSocket);
-        //        //clientSocket = (Socket)ar.AsyncState;
-        //        serverSocket.EndDisconnect(ar);
-        //        isConnected = false;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"SERVER DisconnectCallBack: {ex.Message}");
-        //    }
-        //}
-
-        // 
+        void CloseConnectionClient(Socket clientSocket)
+        {
+            clientSocket.Shutdown(SocketShutdown.Both);
+            clientSocket.Close();
+        }
 
         private void UpdateFormLayout(bool isConnected)
         {
@@ -204,14 +188,14 @@ namespace MessengerServer
                     sendButton.Enabled = true;
                     messageInputTextBox.Enabled = true;
                     connectButton.Text = "Diconnect";
-                    Console.WriteLine(isConnected);
+                    //Console.WriteLine(isConnected);
                 }
                 else
                 {
                     sendButton.Enabled = false;
                     messageInputTextBox.Enabled = false;
                     connectButton.Text = "Connect";
-                    Console.WriteLine(isConnected);
+                    //Console.WriteLine(isConnected);
                 }
             });
 
@@ -221,6 +205,7 @@ namespace MessengerServer
         private void Form1_Load(object sender, EventArgs e)
         {
             UpdateFormLayout(isConnected);
+            //serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
 
         private void SendKeyPressEnter(object sender, KeyPressEventArgs e)
@@ -237,7 +222,6 @@ namespace MessengerServer
             {
                 //serverName = nameTextBox.Text;
                 sendBuffer = Encoding.ASCII.GetBytes($"{serverName}: {messageInputTextBox.Text}");
-                //byte[] dataBuffer = Encoding.ASCII.GetBytes(messageInputTextBox.Text);
                 clientSocket.BeginSend(sendBuffer, 0, sendBuffer.Length, SocketFlags.None, new AsyncCallback(SendCallBack), null);
                 AppendToTexBox(Encoding.ASCII.GetString(sendBuffer));
                 Array.Clear(sendBuffer, 0, sendBuffer.Length);

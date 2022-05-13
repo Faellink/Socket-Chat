@@ -27,7 +27,6 @@ namespace MessengerClient
             InitializeComponent();
         }
 
-
         private void ConnectClick(object sender, EventArgs e)
         {
             if (isConnected == false)
@@ -140,8 +139,6 @@ namespace MessengerClient
         {
             clientSocket.Shutdown(SocketShutdown.Both);
             clientSocket.BeginDisconnect(false, new AsyncCallback(DisconnectCallBack), null);
-            
-            //clientSocket.Close();
 
             isConnected = false;
             UpdateFormLayout(isConnected);
@@ -152,8 +149,6 @@ namespace MessengerClient
         {
             try
             {
-                //SocketConnected(clientSocket);
-                //clientSocket = (Socket)ar.AsyncState;
                 clientSocket.EndDisconnect(ar);
             }
             catch(Exception ex)
@@ -196,22 +191,6 @@ namespace MessengerClient
             UpdateFormLayout(isConnected);
         }
 
-        //private void UpdateFormLayout(bool isConnected)
-        //{
-        //    if (isConnected == true)
-        //    {
-        //        sendButton.Enabled = true;
-        //        messageInputTextBox.Enabled = true;
-        //        connectButton.Text = "Diconnect";
-        //    }
-        //    else
-        //    {
-        //        sendButton.Enabled = false;
-        //        messageInputTextBox.Enabled = false;
-        //        connectButton.Text = "Connect";
-        //    }
-        //}
-
         private void UpdateFormLayout(bool isConnected)
         {
             MethodInvoker invoker = new MethodInvoker(delegate
@@ -229,7 +208,6 @@ namespace MessengerClient
                     connectButton.Text = "Connect";
                 }
             });
-
             this.Invoke(invoker);
         }
     }
