@@ -81,6 +81,7 @@ namespace MessengerClient
 
                 if (received == 0)
                 {
+                    CloseConnections();
                     return;
                 }
 
@@ -101,7 +102,8 @@ namespace MessengerClient
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"CLIENT ReceiveCallBack: {ex.Message}");
+                CloseConnections();
+                //MessageBox.Show($"CLIENT ReceiveCallBack: {ex.Message}");
             }
         }
 

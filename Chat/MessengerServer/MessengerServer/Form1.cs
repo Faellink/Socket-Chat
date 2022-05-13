@@ -47,7 +47,8 @@ namespace MessengerServer
                 serverSocket.Bind(ipEndPoint);
                 serverSocket.Listen(0);
                 serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
-                AppendToTexBox("Server started \r\nWaiting for connections... \r\n ");
+                AppendToTexBox("Server started \r\nWaiting for connections...\r\n");
+                connectButton.Text = "Listening";
             }
             catch (Exception ex)
             {
