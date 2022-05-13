@@ -20,3 +20,14 @@ C:\Users\leoncioraf\Documents\Sequor - Desafios\Bkup\Chat-v1\Chat\MessengerClien
 C:\Users\leoncioraf\Documents\Sequor - Desafios\Bkup\Chat-v1\Chat\MessengerClient\MessengerClient\obj\Debug\MessengerClient.csproj.CoreCompileInputs.cache
 C:\Users\leoncioraf\Documents\Sequor - Desafios\Bkup\Chat-v1\Chat\MessengerClient\MessengerClient\obj\Debug\MessengerClient.exe
 C:\Users\leoncioraf\Documents\Sequor - Desafios\Bkup\Chat-v1\Chat\MessengerClient\MessengerClient\obj\Debug\MessengerClient.pdb
+C:\Users\leoncioraf\Documents\Sequor - Desafios\Git\Sequor---socket-chat-\Chat\MessengerClient\MessengerClient\bin\Debug\MessengerClient.exe.config
+C:\Users\leoncioraf\Documents\Sequor - Desafios\Git\Sequor---socket-chat-\Chat\MessengerClient\MessengerClient\bin\Debug\MessengerClient.exe
+C:\Users\leoncioraf\Documents\Sequor - Desafios\Git\Sequor---socket-chat-\Chat\MessengerClient\MessengerClient\bin\Debug\MessengerClient.pdb
+C:\Users\leoncioraf\Documents\Sequor - Desafios\Git\Sequor---socket-chat-\Chat\MessengerClient\MessengerClient\obj\Debug\MessengerClient.csproj.AssemblyReference.cache
+C:\Users\leoncioraf\Documents\Sequor - Desafios\Git\Sequor---socket-chat-\Chat\MessengerClient\MessengerClient\obj\Debug\MessengerClient.csproj.SuggestedBindingRedirects.cache
+C:\Users\leoncioraf\Documents\Sequor - Desafios\Git\Sequor---socket-chat-\Chat\MessengerClient\MessengerClient\obj\Debug\MessengerClient.Form1.resources
+C:\Users\leoncioraf\Documents\Sequor - Desafios\Git\Sequor---socket-chat-\Chat\MessengerClient\MessengerClient\obj\Debug\MessengerClient.Properties.Resources.resources
+C:\Users\leoncioraf\Documents\Sequor - Desafios\Git\Sequor---socket-chat-\Chat\MessengerClient\MessengerClient\obj\Debug\MessengerClient.csproj.GenerateResource.cache
+C:\Users\leoncioraf\Documents\Sequor - Desafios\Git\Sequor---socket-chat-\Chat\MessengerClient\MessengerClient\obj\Debug\MessengerClient.csproj.CoreCompileInputs.cache
+C:\Users\leoncioraf\Documents\Sequor - Desafios\Git\Sequor---socket-chat-\Chat\MessengerClient\MessengerClient\obj\Debug\MessengerClient.exe
+C:\Users\leoncioraf\Documents\Sequor - Desafios\Git\Sequor---socket-chat-\Chat\MessengerClient\MessengerClient\obj\Debug\MessengerClient.pdb
