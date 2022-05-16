@@ -100,7 +100,8 @@ namespace MessengerClient
                 //accept new dataBuffer
                 clientSocket.BeginReceive(dataBuffer, 0, dataBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), null);
             }
-            catch (Exception ex)
+            catch
+            //(Exception ex)
             {
                 CloseConnections();
                 //MessageBox.Show($"CLIENT ReceiveCallBack: {ex.Message}");

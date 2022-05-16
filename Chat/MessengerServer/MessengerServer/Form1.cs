@@ -28,7 +28,7 @@ namespace MessengerServer
         private string serverName = "server";
         //
         private bool isConnected = false;
-        private bool isListening = false;
+        //private bool isListening = false;
 
         public Form1()
         {
@@ -48,7 +48,7 @@ namespace MessengerServer
 
                 serverSocket.Bind(ipEndPoint);
                 serverSocket.Listen(0);
-                isListening = true;
+                //isListening = true;
                 serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
                 AppendToTexBox("Server started \r\nWaiting for connections...\n");
                 connectButton.Text = "Listening";
@@ -90,7 +90,7 @@ namespace MessengerServer
 
                 if (received == 0)
                 {
-                    CloseConnectionServer(serverSocket);
+                    serverSocket.Dispose();
                     AppendToTexBox("Client Disconnected");
                     isConnected = false;
                     UpdateFormLayout(isConnected);
@@ -131,21 +131,7 @@ namespace MessengerServer
 
         private void ConnectClick(object sender, EventArgs e)
         {
-
-            //StartServer();
-
-            if (isConnected == false)
-            {
-                StartServer();
-            }
-            else
-            {
-                isConnected = false;
-                UpdateFormLayout(isConnected);
-                CloseConnectionClient(clientSocket);
-                CloseConnectionServer(serverSocket);
-            }
-
+            StartServer();
         }
 
         private void SendClick(object sender, EventArgs e)
@@ -216,6 +202,7 @@ namespace MessengerServer
 
         private void SendMessege()
         {
+
             try
             {
                 //serverName = nameTextBox.Text;
