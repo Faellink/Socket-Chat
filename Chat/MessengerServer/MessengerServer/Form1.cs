@@ -142,7 +142,6 @@ namespace MessengerServer
             {
                 CloseConnection();
             }
-            
         }
 
         private void SendClick(object sender, EventArgs e)
@@ -167,15 +166,19 @@ namespace MessengerServer
         {
             try
             {
-                serverSocket.Shutdown(SocketShutdown.Both);
+                //serverSocket.Shutdown(SocketShutdown.Both);
+                clientSocket.Shutdown(SocketShutdown.Both);
+                clientSocket.Dispose();
                 serverSocket.Dispose();
                 AppendToTexBox("Server Disconnected");
+                isConnected = false;
+                UpdateFormLayout(isConnected);
             }
             catch (Exception ex)
             {
                 //MessageBox.Show(ex.Message);
                 //MessageBox.Show(ex.Message, "Close Connection ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                MessageBox.Show(ex.Message, "Server CloseConnection", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "SERVER CloseConnection", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
