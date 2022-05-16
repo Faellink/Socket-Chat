@@ -42,7 +42,8 @@ namespace MessengerClient
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    //MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message, "CLIENT  ConnectClick", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -66,7 +67,8 @@ namespace MessengerClient
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"CLIENT ConnectCallBack: {ex.Message}");
+                //MessageBox.Show($"CLIENT ConnectCallBack: {ex.Message}");
+                MessageBox.Show(ex.Message, "CLIENT ConnectCallBack", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -127,7 +129,8 @@ namespace MessengerClient
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"CLIENT SendCallBack: {ex.Message}");
+                //MessageBox.Show($"CLIENT SendCallBack: {ex.Message}");
+                MessageBox.Show(ex.Message, "CLIENT SendCallBack", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -155,7 +158,8 @@ namespace MessengerClient
             }
             catch(Exception ex)
             {
-                MessageBox.Show($"CLIENT DisconnectCallBack: {ex.Message}");
+                //MessageBox.Show($"CLIENT DisconnectCallBack: {ex.Message}");
+                MessageBox.Show(ex.Message, "CLIENT DisconnetCallBack", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -184,7 +188,8 @@ namespace MessengerClient
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"CLIENT SendClick: {ex.Message}");
+                //MessageBox.Show($"CLIENT SendClick: {ex.Message}");
+                MessageBox.Show(ex.Message, "CLIENT SendClick", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
