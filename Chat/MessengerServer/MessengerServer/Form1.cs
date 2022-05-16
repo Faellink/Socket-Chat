@@ -20,7 +20,8 @@ namespace MessengerServer
         private Socket clientSocket;
         private byte[] dataBuffer;
         private byte[] sendBuffer = new byte[1024];
-        private string serverName = "server";
+        //private string serverName = "server";
+        private string serverName = "";
         private bool isConnected = false;
 
         public Form1()
@@ -33,19 +34,17 @@ namespace MessengerServer
             try
             {
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                //serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                //IPAddress ipAddress = IPAddress.Parse(ipTextBox.Text);
-                //int portNumber = int.Parse(portTextBox.Text);
-                //IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, portNumber);
-                IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 23000);
+                serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IPAddress ipAddress = IPAddress.Parse(ipTextBox.Text);
+                int portNumber = int.Parse(portTextBox.Text);
+                IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, portNumber);
+                //IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 23000);
 
                 serverSocket.Bind(ipEndPoint);
                 serverSocket.Listen(0);
-                //isListening = true;
                 serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
                 AppendToTexBox("Server started \r\nWaiting for connections...\n");
                 connectButton.Text = "Listening";
-
             }
             catch (Exception ex)
             {
@@ -73,10 +72,8 @@ namespace MessengerServer
 
         private void ReceiveCallBack(IAsyncResult ar)
         {
-
             try
             {
-
                 int received = clientSocket.EndReceive(ar);
 
                 if (received == 0)
@@ -93,39 +90,11 @@ namespace MessengerServer
                 AppendToTexBox(text);
                 Array.Resize(ref dataBuffer, clientSocket.ReceiveBufferSize);
                 clientSocket.BeginReceive(dataBuffer, 0, dataBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), null);
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "SERVER ReceiveCallBack", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void AppendToTexBox(string text)
-        {
-            MethodInvoker invoker = new MethodInvoker(delegate
-            {
-                chatLogTextBox.AppendText($"{text} \r\n");
-            });
-
-            this.Invoke(invoker);
-        }
-
-        private void ConnectClick(object sender, EventArgs e)
-        {
-            if (isConnected == false)
-            {
-                StartServer();
-            }
-            else
-            {
-                CloseConnection();
-            }
-        }
-
-        private void SendClick(object sender, EventArgs e)
-        {
-            SendMessege();
         }
 
         private void SendCallBack(IAsyncResult ar)
@@ -140,15 +109,62 @@ namespace MessengerServer
             }
         }
 
+        private void ConnectClick(object sender, EventArgs e)
+        {
+            StartServer();
+        }
+
+        private void SendClick(object sender, EventArgs e)
+        {
+            SendMessege();
+        }
+
+        private void SendKeyPressEnter(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                SendMessege();
+            }
+        }
+
+        private void SendMessege()
+        {
+            try
+            {
+                serverName = nameTextBox.Text;
+                sendBuffer = Encoding.ASCII.GetBytes($"{serverName}: {messageInputTextBox.Text}");
+                clientSocket.BeginSend(sendBuffer, 0, sendBuffer.Length, SocketFlags.None, new AsyncCallback(SendCallBack), null);
+                AppendToTexBox(Encoding.ASCII.GetString(sendBuffer));
+                Array.Clear(sendBuffer, 0, sendBuffer.Length);
+                messageInputTextBox.Text = "";
+            }
+            catch (SocketException sex)
+            {
+                //TODO: close connection
+                MessageBox.Show(sex.Message, "SERVER SendClick SocketException", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "SERVER SendClick", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void AppendToTexBox(string text)
+        {
+            MethodInvoker invoker = new MethodInvoker(delegate
+            {
+                chatLogTextBox.AppendText($"{text} \r\n");
+            });
+
+            this.Invoke(invoker);
+        }
+
         private void CloseConnection()
         {
             try
             {
                 serverSocket.Shutdown(SocketShutdown.Both);
                 serverSocket.Close();
-                //clientSocket.Shutdown(SocketShutdown.Both);
-                //clientSocket.Dispose();
-                //serverSocket.Dispose();
                 AppendToTexBox("Server Disconnected");
                 isConnected = false;
                 UpdateFormLayout(isConnected);
@@ -185,34 +201,5 @@ namespace MessengerServer
             UpdateFormLayout(isConnected);
         }
 
-        private void SendKeyPressEnter(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)13)
-            {
-                SendMessege();
-            }
-        }
-
-        private void SendMessege()
-        {
-            try
-            {
-                //serverName = nameTextBox.Text;
-                sendBuffer = Encoding.ASCII.GetBytes($"{serverName}: {messageInputTextBox.Text}");
-                clientSocket.BeginSend(sendBuffer, 0, sendBuffer.Length, SocketFlags.None, new AsyncCallback(SendCallBack), null);
-                AppendToTexBox(Encoding.ASCII.GetString(sendBuffer));
-                Array.Clear(sendBuffer, 0, sendBuffer.Length);
-                messageInputTextBox.Text = "";
-            }
-            catch (SocketException sex)
-            {
-                //TODO: close connection
-                MessageBox.Show(sex.Message, "SERVER SendClick SocketException", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "SERVER SendClick", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
     }
 }

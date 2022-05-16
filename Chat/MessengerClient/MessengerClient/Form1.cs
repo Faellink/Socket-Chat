@@ -19,7 +19,8 @@ namespace MessengerClient
         private Socket clientSocket;
         private byte[] dataBuffer;
         private byte[] sendBuffer = new byte[1024];
-        private string clientName = "client";
+        //private string clientName = "client";
+        private string clientName = "";
         private bool isConnected = false;
 
         public Form1()
@@ -34,10 +35,10 @@ namespace MessengerClient
                 try
                 {
                     clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    //IPAddress ipAddress = IPAddress.Parse(ipTextBox.Text);
-                    //int portNumber = int.Parse(portTextBox.Text);
-                    //IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, portNumber);
-                    IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 23000);
+                    IPAddress ipAddress = IPAddress.Parse(ipTextBox.Text);
+                    int portNumber = int.Parse(portTextBox.Text);
+                    IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, portNumber);
+                    //IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 23000);
                     clientSocket.BeginConnect(ipEndPoint, new AsyncCallback(ConnectCallBack), null);
                 }
                 catch (Exception ex)
@@ -156,7 +157,7 @@ namespace MessengerClient
         {
             try
             {
-                //clientName = nameTextBox.Text;
+                clientName = nameTextBox.Text;
                 sendBuffer = Encoding.ASCII.GetBytes($"{clientName}: {messageInputTextBox.Text}");
                 clientSocket.BeginSend(sendBuffer, 0, sendBuffer.Length, SocketFlags.None, new AsyncCallback(SendCallBack), null);
                 AppendToTexBox(Encoding.ASCII.GetString(sendBuffer));
