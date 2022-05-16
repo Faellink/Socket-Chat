@@ -56,7 +56,8 @@ namespace MessengerServer
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"SERVER Start server: {ex.Message}");
+                //MessageBox.Show($"SERVER Start server: {ex.Message}");
+                MessageBox.Show(ex.Message, "SERVER Start server", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -75,7 +76,8 @@ namespace MessengerServer
             catch (Exception ex)
             {
                 //serverSocket.Close();
-                MessageBox.Show($"SERVER AcceptCallBack: {ex.Message}");
+                //MessageBox.Show($"SERVER AcceptCallBack: {ex.Message}");
+                MessageBox.Show(ex.Message, "SERVER AcceptCallBack", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -115,7 +117,8 @@ namespace MessengerServer
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"SERVER ReceiveCallBack: {ex.Message}");
+                //MessageBox.Show($"SERVER ReceiveCallBack: {ex.Message}");
+                MessageBox.Show(ex.Message, "SERVER ReceiveCallBack", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -131,7 +134,15 @@ namespace MessengerServer
 
         private void ConnectClick(object sender, EventArgs e)
         {
-            StartServer();
+            if (isConnected == false)
+            {
+                StartServer();
+            }
+            else
+            {
+                CloseConnection();
+            }
+            
         }
 
         private void SendClick(object sender, EventArgs e)
@@ -147,7 +158,24 @@ namespace MessengerServer
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"SERVER SendCallBack: {ex.Message}");
+                //MessageBox.Show($"SERVER SendCallBack: {ex.Message}");
+                MessageBox.Show(ex.Message, "SERVER SendCallBack", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void CloseConnection()
+        {
+            try
+            {
+                serverSocket.Shutdown(SocketShutdown.Both);
+                serverSocket.Dispose();
+                AppendToTexBox("Server Disconnected");
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message, "Close Connection ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Server CloseConnection", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -215,11 +243,13 @@ namespace MessengerServer
             catch (SocketException sex)
             {
                 //TODO: close connection
-                MessageBox.Show($"SERVER SendClick SocketException: {sex.Message}");
+                //MessageBox.Show($"SERVER SendClick SocketException: {sex.Message}");
+                MessageBox.Show(sex.Message, "SERVER SendClick SocketException", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"SERVER SendClick: {ex.Message}");
+                //MessageBox.Show($"SERVER SendClick: {ex.Message}");
+                MessageBox.Show(ex.Message, "SERVER SendClick", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
