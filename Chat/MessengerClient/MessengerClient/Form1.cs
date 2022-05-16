@@ -42,7 +42,6 @@ namespace MessengerClient
                 }
                 catch (Exception ex)
                 {
-                    //MessageBox.Show(ex.Message);
                     MessageBox.Show(ex.Message, "CLIENT  ConnectClick", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -61,13 +60,11 @@ namespace MessengerClient
                 dataBuffer = new byte[clientSocket.ReceiveBufferSize];
                 clientSocket.BeginReceive(dataBuffer, 0, dataBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), null);
                 AppendToTexBox("Connected to server");
-                //sendButton.Enabled = true;
                 isConnected = true;
                 UpdateFormLayout(isConnected);
             }
             catch (Exception ex)
             {
-                //MessageBox.Show($"CLIENT ConnectCallBack: {ex.Message}");
                 MessageBox.Show(ex.Message, "CLIENT ConnectCallBack", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -76,9 +73,7 @@ namespace MessengerClient
         {
             try
             {
-                ////TODO: work on receive
-                
-                //end receive returns bytes received
+
                 int received = clientSocket.EndReceive(ar);
 
                 if (received == 0)
@@ -87,26 +82,16 @@ namespace MessengerClient
                     return;
                 }
 
-                //change number of elements to a specified new size
                 Array.Resize(ref dataBuffer, received);
-
-                //encode the bytes array to a string
                 string text = Encoding.ASCII.GetString(dataBuffer,0,received);
-
-                //join text to text box
                 AppendToTexBox(text);
-
-                ///change number of elements to a specified new size
                 Array.Resize(ref dataBuffer, clientSocket.ReceiveBufferSize);
-
-                //accept new dataBuffer
                 clientSocket.BeginReceive(dataBuffer, 0, dataBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), null);
             }
             catch
-            //(Exception ex)
             {
                 CloseConnections();
-                //MessageBox.Show($"CLIENT ReceiveCallBack: {ex.Message}");
+                //MessageBox.Show(ex.Message, "CLIENT ReceiveCallBack", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -129,7 +114,6 @@ namespace MessengerClient
             }
             catch (Exception ex)
             {
-                //MessageBox.Show($"CLIENT SendCallBack: {ex.Message}");
                 MessageBox.Show(ex.Message, "CLIENT SendCallBack", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -139,7 +123,6 @@ namespace MessengerClient
             SendMessege();
         }
 
-        //TODO: close connections
         private void CloseConnections()
         {
             clientSocket.Shutdown(SocketShutdown.Both);
@@ -147,7 +130,6 @@ namespace MessengerClient
 
             isConnected = false;
             UpdateFormLayout(isConnected);
-            //AppendToTexBox("Connection Closed");
         }
 
         private void DisconnectCallBack(IAsyncResult ar)
@@ -158,7 +140,6 @@ namespace MessengerClient
             }
             catch(Exception ex)
             {
-                //MessageBox.Show($"CLIENT DisconnectCallBack: {ex.Message}");
                 MessageBox.Show(ex.Message, "CLIENT DisconnetCallBack", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -188,7 +169,6 @@ namespace MessengerClient
             }
             catch (Exception ex)
             {
-                //MessageBox.Show($"CLIENT SendClick: {ex.Message}");
                 MessageBox.Show(ex.Message, "CLIENT SendClick", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
